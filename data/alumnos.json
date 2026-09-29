@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "nombre": "Javier Pérez",
+        "documento": "12345",
+        "horario": "Horario Adultos",
+        "cinturon": "Cinturón Blanco",
+        "activo": "Inactivo"
+    },
+    {
+        "id": 2,
+        "nombre": "María González",
+        "documento": "67890",
+        "horario": "Horario Infantil",
+        "cinturon": "Cinturón Amarillo",
+        "activo": "Inactivo"
+    },
+    {
+        "id": 3,
+        "nombre": "javier",
+        "documento": "1234590",
+        "horario": "Horario infantil",
+        "cinturon": "Cinturón Azul",
+        "estado": "Inactivo"
+    },
+    {
+        "id": 4,
+        "nombre": "Juan Techouna",
+        "documento": "54321",
+        "horario": "Horario Adultos",
+        "cinturon": "Cinturón Negro",
+        "estado": "Activo"
+    },
+    {
+        "id": 5,
+        "nombre": "Helena Pérez",
+        "documento": "098765",
+        "horario": "Horario infantil",
+        "cinturon": "Cinturón verde",
+        "estado": "Inactivo"
+    }
+]

@@ -1,0 +1,37 @@
+{% extends 'dojoApp/base.html' %}
+{% block title %}Registrar Alumno{% endblock %}
+{% block content %}
+
+<div class="container my-4" style="max-width: 600px;">
+    <h2>Registrar Nuevo Alumno</h2>
+    <form method="POST" class="mt-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Documento</label>
+            <input type="text" name="documento" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Horario</label>
+            <input type="text" name="horario" class="form-control" placeholder="Ej: Horario Adultos" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cinturón</label>
+            <input type="text" name="cinturon" class="form-control" placeholder="Ej: Cinturón Blanco" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar Alumno</button>
+        <!-- Cambia esta línea: -->
+<a href="{% url 'dojo:lista_alumnos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

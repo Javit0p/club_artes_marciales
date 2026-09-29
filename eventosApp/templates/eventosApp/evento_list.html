@@ -1,0 +1,23 @@
+{% extends 'dojoApp/base.html' %}
+{% load static %}
+
+{% block title %}Eventos - Club TaeKwonDo{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Próximos Eventos</h2>
+<div class="row">
+    {% for evento in eventos %}
+    <div class="col-md-6 mb-3">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h4 class="card-title text-danger fw-bold">{{ evento.titulo }}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">📅 {{ evento.fecha }} | 📍 {{ evento.lugar }}</h6>
+                <p class="card-text mt-3">{{ evento.descripcion }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay eventos registrados en el archivo JSON.</p>
+    {% endfor %}
+</div>
+{% endblock %}

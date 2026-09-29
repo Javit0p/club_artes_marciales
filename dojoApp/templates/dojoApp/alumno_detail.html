@@ -1,0 +1,100 @@
+{% extends 'dojoApp/base.html' %}
+
+{% block title %}Ficha de Alumno - {{ alumno.nombre }}{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilos dinámicos para los recuadros de Cinturón ITF */
+    .cinturon-blanco { background-color: #ffffff; color: #212529; border-bottom: 3px solid #dee2e6; }
+    .cinturon-blanco-amarillo { background: linear-gradient(90deg, #ffffff 88%, #f1c40f 88%); color: #212529; border-bottom: 3px solid #dee2e6; }
+    .cinturon-amarillo { background-color: #f1c40f; color: #212529; }
+    .cinturon-amarillo-verde { background: linear-gradient(90deg, #f1c40f 88%, #27ae60 88%); color: #212529; }
+    .cinturon-verde { background-color: #27ae60; color: #ffffff; }
+    .cinturon-verde-azul { background: linear-gradient(90deg, #27ae60 88%, #2980b9 88%); color: #ffffff; }
+    .cinturon-azul { background-color: #2980b9; color: #ffffff; }
+    .cinturon-azul-rojo { background: linear-gradient(90deg, #2980b9 88%, #c0392b 88%); color: #ffffff; }
+    .cinturon-rojo { background-color: #c0392b; color: #ffffff; }
+    .cinturon-rojo-negro { background: linear-gradient(90deg, #c0392b 88%, #111111 88%); color: #ffffff; }
+    .cinturon-negro { background-color: #111111; color: #ffffff; }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow border-0 rounded-3 overflow-hidden">
+            
+            {% with c_nombre=alumno.cinturon.nombre|lower %}
+            <!-- Encabezado Dinámico según Cinturón -->
+            <div class="card-header py-3 px-4 d-flex justify-content-between align-items-center
+                {% if 'blanco' in c_nombre and 'amarill' in c_nombre %}cinturon-blanco-amarillo
+                {% elif 'amarillo' in c_nombre and 'verd' in c_nombre %}cinturon-amarillo-verde
+                {% elif 'verde' in c_nombre and 'azul' in c_nombre %}cinturon-verde-azul
+                {% elif 'azul' in c_nombre and 'roj' in c_nombre %}cinturon-azul-rojo
+                {% elif 'rojo' in c_nombre and 'negr' in c_nombre %}cinturon-rojo-negro
+                {% elif 'blanco' in c_nombre %}cinturon-blanco
+                {% elif 'amarillo' in c_nombre %}cinturon-amarillo
+                {% elif 'verde' in c_nombre %}cinturon-verde
+                {% elif 'azul' in c_nombre %}cinturon-azul
+                {% elif 'rojo' in c_nombre %}cinturon-rojo
+                {% elif 'negro' in c_nombre %}cinturon-negro
+                {% else %}bg-primary text-white{% endif %}">
+                
+                <h3 class="m-0 fw-bold">Ficha del Alumno</h3>
+
+                <!-- Botón de regreso adaptable -->
+                {% if 'blanco' in c_nombre or 'amarillo' in c_nombre %}
+                    <a href="{% url 'dojo:lista_alumnos' %}" class="btn btn-outline-dark btn-sm fw-bold px-3">
+                        &larr; Volver a la Lista
+                    </a>
+                {% else %}
+                    <a href="{% url 'dojo:lista_alumnos' %}" class="btn btn-outline-light btn-sm fw-bold px-3">
+                        &larr; Volver a la Lista
+                    </a>
+                {% endif %}
+            </div>
+            {% endwith %}
+
+            <!-- Cuerpo de la Ficha del Alumno -->
+            <div class="card-body p-4 bg-white">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Nombre Completo</span>
+                        <h4 class="fw-bold text-dark mt-1">{{ alumno.nombre }}</h4>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Documento / RUT</span>
+                        <h4 class="fw-bold text-dark mt-1">{{ alumno.documento }}</h4>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Cinturón Actual</span>
+                        <span class="badge bg-dark text-white fs-6 mt-1 px-3 py-2">
+                            {{ alumno.cinturon.nombre }}
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Horario de Entrenamiento</span>
+                        <h5 class="fw-semibold text-secondary mt-1">{{ alumno.horario }}</h5>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Estado de Matrícula</span>
+                        {% if alumno.estado == 'Activo' %}
+                            <span class="badge bg-success-subtle text-success border border-success mt-1 px-3 py-2 fs-6">Activo</span>
+                        {% else %}
+                            <span class="badge bg-danger-subtle text-danger border border-danger mt-1 px-3 py-2 fs-6">Inactivo</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted d-block small fw-bold text-uppercase">Fecha de Ingreso</span>
+                        <h5 class="fw-semibold text-secondary mt-1">{{ alumno.fecha_ingreso|date:"d/m/Y" }}</h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

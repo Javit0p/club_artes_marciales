@@ -1,0 +1,113 @@
+{% extends 'dojoApp/base.html' %}
+
+{% block title %}Panel de Gestión - Alumnos{% endblock %}
+
+{% block content %}
+<!-- Tarjetas Estadísticas -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card card-stat bg-white shadow-sm p-3 border-start border-primary border-4">
+            <span class="text-muted fw-bold small text-uppercase d-block">Alumnos Registrados</span>
+            <h3 class="fw-bold m-0 text-dark">{{ alumnos|length }}</h3>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card card-stat bg-white shadow-sm p-3 border-start border-success border-4">
+            <span class="text-muted fw-bold small text-uppercase d-block">Base de Datos</span>
+            <h5 class="fw-bold m-0 text-success">Conectado</h5>
+        </div>
+    </div>
+
+    <!-- Tarjeta Federación en Dorado -->
+    <div class="col-md-4">
+        <div class="card card-stat bg-white shadow-sm p-3 border-start border-4" style="border-left-color: #d4af37 !important;">
+            <span class="text-muted fw-bold small text-uppercase d-block">Federación</span>
+            <h5 class="fw-bold m-0" style="color: #b8860b;">ITF Taekwondo</h5>
+        </div>
+    </div>
+</div>
+
+<!-- Tarjeta Principal con Tabla y Botones -->
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+            <h4 class="m-0 fw-bold text-dark">Nómina Oficial de Alumnos</h4>
+            <small class="text-muted">Registro centralizado de deportistas del dojo</small>
+        </div>
+        <a href="{% url 'dojo:crear_alumno' %}" class="btn btn-success fw-bold px-3 shadow-sm">
+            + Agregar Alumno
+        </a>
+    </div>
+
+    <!-- Barra de Búsqueda -->
+    <div class="p-3 bg-light border-bottom">
+        <form class="row g-2 align-items-center" role="search">
+            <div class="col-md-10">
+                <input class="form-control" type="search" placeholder="Buscar alumno por nombre, documento u horario..." aria-label="Buscar">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100 fw-bold" type="submit">
+                    Buscar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabla de Datos -->
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-3">Nombre Completo</th>
+                        <th>Documento / RUT</th>
+                        <th>Horario</th>
+                        <th>Cinturón</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alumno in alumnos %}
+                    <tr>
+                        <td class="ps-3 fw-bold text-dark">{{ alumno.nombre }}</td>
+                        <td class="text-muted fw-semibold">{{ alumno.documento }}</td>
+                        <td><span class="badge bg-light text-dark border">{{ alumno.horario }}</span></td>
+                        <td>
+                            <span class="badge bg-dark text-white px-2 py-1">{{ alumno.cinturon.nombre }}</span>
+                        </td>
+                        <td>
+                            {% if alumno.estado == 'Activo' %}
+                                <span class="badge bg-success-subtle text-success border border-success px-2 py-1">Activo</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger px-2 py-1">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{% url 'dojo:detalle_alumno' alumno.id %}" class="btn btn-outline-primary">
+                                    Ver Ficha
+                                </a>
+                                <a href="{% url 'dojo:modificar_alumno' alumno.id %}" class="btn btn-outline-warning text-dark">
+                                    Modificar
+                                </a>
+                                <a href="{% url 'dojo:eliminar_alumno' alumno.id %}" class="btn btn-outline-danger">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            No hay alumnos registrados en la base de datos.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

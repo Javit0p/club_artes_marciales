@@ -1,0 +1,50 @@
+# ==========================================
+# Credenciales y Variables de Entorno
+# ==========================================
+# Excluir claves secretas y datos sensibles[cite: 14]
+.env
+.env.local
+*.pem
+
+# ==========================================
+# Entorno Virtual
+# ==========================================
+# Ignorar dependencias locales instaladas
+venv/
+env/
+.venv/
+ENV/
+
+# ==========================================
+# Archivos Compilados y Caché de Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# Base de Datos Local
+# ==========================================
+# Evitar subir datos de desarrollo local
+db.sqlite3
+db.sqlite3-journal
+
+# ==========================================
+# Archivos Estáticos y De Usuario (Media)
+# ==========================================
+/staticfiles/
+/media/
+
+# ==========================================
+# Configuración del Editor de Código (IDE)
+# ==========================================
+.vscode/
+.idea/
+*.swp
+
+# ==========================================
+# Archivos del Sistema Operativo
+# ==========================================
+.DS_Store
+Thumbs.db

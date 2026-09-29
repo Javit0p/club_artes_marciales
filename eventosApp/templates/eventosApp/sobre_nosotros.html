@@ -1,0 +1,17 @@
+{% extends 'dojoApp/base.html' %}
+{% load static %}
+
+{% block title %}Sobre Nosotros - Club TaeKwonDo{% endblock %}
+
+{% block content %}
+<div class="row align-items-center my-4">
+    <div class="col-md-8">
+        <h2 class="fw-bold text-danger">Sobre Nuestro Club</h2>
+        <p class="lead mt-3">Formamos atletas integrales en la disciplina del TaeKwonDo, promoviendo el respeto, la perseverancia y la cortesía.</p>
+        <div class="alert alert-info mt-4">
+            <strong class="d-block mb-1">Frase Motivacional (Librería Requests):</strong>
+            <span>"{{ frase }}"</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

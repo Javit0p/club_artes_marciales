@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "titulo": "Torneo Nacional de TaeKwonDo",
+        "fecha": "2026-10-15",
+        "lugar": "Gimnasio Central",
+        "descripcion": "Competencia anual de formas y combate."
+    },
+    {
+        "id": 2,
+        "titulo": "Examen de Cintas Negras",
+        "fecha": "2026-11-20",
+        "lugar": "Dojo Principal",
+        "descripcion": "Evaluación técnica de fin de año."
+    }
+]
