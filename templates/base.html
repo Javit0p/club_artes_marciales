@@ -65,7 +65,7 @@
     <!-- Navbar Principal -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-itf shadow-sm py-2">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'dojo:lista_alumnos' %}">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'dashboard' %}">
                 <img src="{% static 'dojoApp/images/logo_taekwondo.png' %}" alt="Logo ITF" class="logo-nav shadow">
                 <div>
                     <span class="fw-bold d-block lh-1 text-white fs-4">Club TaeKwonDo</span>
@@ -80,18 +80,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center gap-1">
                     <li class="nav-item">
-                        <a class="nav-link active fw-semibold px-3" href="{% url 'dojo:lista_alumnos' %}">
-                            <i class="bi bi-people-fill me-1"></i> Alumnos
+                        <a class="nav-link active fw-semibold px-3" href="{% url 'dashboard' %}">
+                            <i class="bi bi-people-fill me-1"></i> Panel de Control
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold px-3" href="{% url 'eventos:lista_eventos' %}">
+                        <a class="nav-link fw-semibold px-3" href="{% url 'evento_list' %}">
                             <i class="bi bi-calendar-event-fill me-1"></i> Eventos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold px-3" href="{% url 'eventos:sobre_nosotros' %}">
+                        <a class="nav-link fw-semibold px-3" href="#">
                             <i class="bi bi-info-circle-fill me-1"></i> Sobre Nosotros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold px-3" href="{% url 'inscripcion_list' %}">
+                            <i class="bi bi-journal-check me-1"></i> Inscripciones
                         </a>
                     </li>
                     <li class="nav-item ms-lg-2">

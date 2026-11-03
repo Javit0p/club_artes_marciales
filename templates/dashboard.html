@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Panel de Control</h2>
+        <div>
+            <span class="badge bg-info text-dark fs-6 me-2">
+                Usuario: {{ user.username }} 
+                ({% if es_admin %}Administrador{% elif es_supervisor %}Supervisor{% else %}Administrativo{% endif %})
+            </span>
+            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECCIÓN ADMINISTRADOR -->
+    {% if es_admin %}
+    <div class="alert alert-primary fw-bold">Modo Administrador: Acceso total al sistema y gestión de usuarios.</div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card card-body shadow-sm border-primary">
+                <h5>Mantenedor de Alumnos</h5>
+                <p class="small text-muted">Gestión completa (Crear, Editar, Buscar, Eliminar).</p>
+                <a href="{% url 'alumno_list' %}" class="btn btn-primary btn-sm">Gestionar Alumnos</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-body shadow-sm border-primary">
+                <h5>Mantenedor de Eventos</h5>
+                <p class="small text-muted">Gestión completa de torneos y exámenes.</p>
+                <a href="{% url 'evento_list' %}" class="btn btn-primary btn-sm">Gestionar Eventos</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-body shadow-sm border-primary">
+                <h5>Transacción: Inscripciones</h5>
+                <p class="small text-muted">Registrar inscripciones a torneos.</p>
+                <a href="{% url 'inscripcion_create' %}" class="btn btn-success">Inscribir Alumno</a>
+                <a href="{% url 'inscripcion_list' %}" class="btn btn-outline-success btn-sm">Ver Inscripciones</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- SECCIÓN SUPERVISOR -->
+    {% if es_supervisor %}
+    <div class="alert alert-warning fw-bold">Modo Supervisor: Permisos intermedios operacionales.</div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card card-body shadow-sm border-warning">
+                <h5>Visualizar y Editar Alumnos</h5>
+                <p class="small text-muted">Consulta de nómina y modificación de fichas.</p>
+                <a href="{% url 'alumno_list' %}" class="btn btn-warning btn-sm">Ver Alumnos</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-body shadow-sm border-warning">
+                <h5>Transacción: Inscripciones</h5>
+                <p class="small text-muted">Inscripción a eventos de dojo.</p>
+                <a href="{% url 'inscripcion_create' %}" class="btn btn-success btn-sm">Inscribir Alumno</a>
+                <a href="{% url 'inscripcion_list' %}" class="btn btn-outline-success btn-sm">Ver Inscripciones</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- SECCIÓN ADMINISTRATIVO -->
+    {% if es_administrativo and not es_admin and not es_supervisor %}
+    <div class="alert alert-secondary fw-bold">Modo Administrativo: Permisos mínimos de lectura y consulta.</div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-12">
+            <div class="card card-body shadow-sm">
+                <h5>Consulta de Alumnos</h5>
+                <p class="small text-muted">Acceso únicamente a la lista de deportistas activos.</p>
+                <a href="{% url 'alumno_list' %}" class="btn btn-secondary btn-sm">Consultar Nómina</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
