@@ -1,43 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container my-4">
+<div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Registro de Inscripciones a Eventos</h2>
+        <h2 class="fw-bold">Registro de Inscripciones a Eventos</h2>
         <a href="{% url 'inscripcion_create' %}" class="btn btn-success">+ Inscribir Alumno</a>
     </div>
 
-    <div class="table-responsive shadow-sm rounded">
-        <table class="table table-striped align-middle mb-0">
-            <thead class="table-dark">
-                <tr>
-                    <th>Alumno</th>
-                    <th>Evento</th>
-                    <th>Fecha Registro</th>
-                    <th>Estado Pago</th>
-                    <th>Observaciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in inscripciones %}
-                <tr>
-                    <td><strong>{{ i.alumno.nombre }}</strong> <br><small class="text-muted">{{ i.alumno.documento }}</small></td>
-                    <td>{{ i.evento.titulo }}</td>
-                    <td>{{ i.fecha_inscripcion|date:"d/m/Y" }}</td>
-                    <td>
-                        <span class="badge {% if i.estado_pago == 'Pagado' %}bg-success{% else %}bg-warning text-dark{% endif %}">
-                            {{ i.estado_pago }}
-                        </span>
-                    </td>
-                    <td>{{ i.observaciones|default:"-" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Evento</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado Pago</th>
+                            <th>Observaciones</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscripcion in inscripciones %}
+                        <tr>
+                            <td>
+                                <strong>{{ inscripcion.alumno.nombres }} {{ inscripcion.alumno.apellido_paterno }}</strong><br>
+                                <small class="text-muted">{{ inscripcion.alumno.rut }}</small>
+                            </td>
+                            <td>{{ inscripcion.evento.titulo }}</td>
+                            <td>{{ inscripcion.fecha_registro|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if inscripcion.estado_pago == 'Pagado' or inscripcion.estado_pago == 'pagado' %}
+                                    <span class="badge bg-success">Pagado</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ inscripcion.observaciones|default:"-" }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'editar_inscripcion' inscripcion.id %}" class="btn btn-sm btn-outline-primary me-1">
+                                    Editar
+                                </a>
+                                <a href="{% url 'eliminar_inscripcion' inscripcion.id %}" class="btn btn-sm btn-outline-danger">
+                                    Cancelar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No hay inscripciones registradas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

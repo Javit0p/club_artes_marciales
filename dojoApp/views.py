@@ -69,3 +69,6 @@ def alumno_delete(request, pk):
         alumno.delete()
         return redirect('alumno_list')
     return render(request, 'dojoApp/alumno_confirm_delete.html', {'alumno': alumno})
+
+def sobre_nosotros(request):
+    return render(request, 'sobre_nosotros.html')

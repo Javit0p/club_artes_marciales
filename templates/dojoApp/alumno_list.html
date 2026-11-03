@@ -38,7 +38,59 @@
                     <td>{{ a.nombre }}</td>
                     <td>{{ a.documento }}</td>
                     <td>{{ a.horario }}</td>
-                    <td><span class="badge bg-info text-dark">{{ a.cinturon }}</span></td>
+                    <td>
+                        {% with c=a.cinturon.nombre|default:a.cinturon|stringformat:"s"|lower %}
+                            {% if 'blanco' in c and 'amarill' in c %}
+                                <span class="badge text-dark border px-2 py-1" style="background: linear-gradient(to right, #ffffff 70%, #ffc107 70%);">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'blanco' in c %}
+                                <span class="badge text-dark border bg-light px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'amarill' in c and 'verd' in c %}
+                                <span class="badge text-dark px-2 py-1" style="background: linear-gradient(to right, #ffc107 70%, #198754 70%);">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'amarill' in c %}
+                                <span class="badge bg-warning text-dark px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'verd' in c and 'azul' in c %}
+                                <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #198754 70%, #0d6efd 70%);">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'verd' in c %}
+                                <span class="badge bg-success text-white px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'azul' in c and 'roj' in c %}
+                                <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #0d6efd 70%, #dc3545 70%);">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'azul' in c %}
+                                <span class="badge bg-primary text-white px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'roj' in c and 'negr' in c %}
+                                <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #dc3545 70%, #212529 70%);">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'roj' in c %}
+                                <span class="badge bg-danger text-white px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% elif 'negr' in c %}
+                                <span class="badge bg-dark text-white px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary text-white px-2 py-1">
+                                    {{ a.cinturon }}
+                                </span>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
                     <td>
                         <span class="badge {% if a.estado == 'Activo' %}bg-success{% else %}bg-secondary{% endif %}">
                             {{ a.estado }}

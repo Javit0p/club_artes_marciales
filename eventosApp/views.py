@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Evento, InscripcionEvento
 from .forms import EventoForm, InscripcionForm
 
@@ -60,3 +61,25 @@ def inscripcion_create(request):
     else:
         form = InscripcionForm()
     return render(request, 'eventosApp/inscripcion_form.html', {'form': form})
+
+@login_required
+def editar_inscripcion(request, pk):
+    inscripcion = get_object_or_404(InscripcionEvento, pk=pk)
+    if request.method == 'POST':
+        form = InscripcionForm(request.POST, instance=inscripcion)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Inscripción actualizada correctamente.')
+            return redirect('inscripcion_list')
+    else:
+        form = InscripcionForm(instance=inscripcion)
+    return render(request, 'eventosApp/editar_inscripcion.html', {'form': form, 'inscripcion': inscripcion})
+
+@login_required
+def eliminar_inscripcion(request, pk):
+    inscripcion = get_object_or_404(InscripcionEvento, pk=pk)
+    if request.method == 'POST':
+        inscripcion.delete()
+        messages.success(request, 'La inscripción ha sido cancelada.')
+        return redirect('inscripcion_list')
+    return render(request, 'eventosApp/eliminar_inscripcion.html', {'inscripcion': inscripcion})

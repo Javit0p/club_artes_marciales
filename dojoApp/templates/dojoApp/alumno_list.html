@@ -42,9 +42,9 @@
 
     <!-- Barra de Búsqueda -->
     <div class="p-3 bg-light border-bottom">
-        <form class="row g-2 align-items-center" role="search">
+        <form class="row g-2 align-items-center" role="search" method="get">
             <div class="col-md-10">
-                <input class="form-control" type="search" placeholder="Buscar alumno por nombre, documento u horario..." aria-label="Buscar">
+                <input class="form-control" type="search" name="q" value="{{ request.GET.q }}" placeholder="Buscar alumno por nombre, documento u horario..." aria-label="Buscar">
             </div>
             <div class="col-md-2">
                 <button class="btn btn-primary w-100 fw-bold" type="submit">
@@ -75,7 +75,63 @@
                         <td class="text-muted fw-semibold">{{ alumno.documento }}</td>
                         <td><span class="badge bg-light text-dark border">{{ alumno.horario }}</span></td>
                         <td>
-                            <span class="badge bg-dark text-white px-2 py-1">{{ alumno.cinturon.nombre }}</span>
+                            {% with c=alumno.cinturon.nombre|default:alumno.cinturon|lower %}
+                                {% if 'blanco' in c and 'amarill' in c %}
+                                    <span class="badge text-dark border px-2 py-1" style="background: linear-gradient(to right, #ffffff 70%, #ffc107 70%);">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% elif 'blanco' in c %}
+                                    <span class="badge text-dark border bg-light px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% elif 'amarill' in c and 'verd' in c %}
+                                    <span class="badge text-dark px-2 py-1" style="background: linear-gradient(to right, #ffc107 70%, #198754 70%);">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% elif 'amarill' in c %}
+                                    <span class="badge bg-warning text-dark px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% elif 'verd' in c and 'azul' in c %}
+                                    <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #198754 70%, #0d6efd 70%);">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% elif 'verd' in c %}
+                                    <span class="badge bg-success text-white px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% elif 'azul' in c and 'roj' in c %}
+                                    <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #0d6efd 70%, #dc3545 70%);">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% elif 'azul' in c %}
+                                    <span class="badge bg-primary text-white px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% elif 'roj' in c and 'negr' in c %}
+                                    <span class="badge text-white px-2 py-1" style="background: linear-gradient(to right, #dc3545 70%, #212529 70%);">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% elif 'roj' in c %}
+                                    <span class="badge bg-danger text-white px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% elif 'negr' in c %}
+                                    <span class="badge bg-dark text-white px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+
+                                {% else %}
+                                    <span class="badge bg-secondary text-white px-2 py-1">
+                                        {{ alumno.cinturon.nombre|default:alumno.cinturon }}
+                                    </span>
+                                {% endif %}
+                            {% endwith %}
                         </td>
                         <td>
                             {% if alumno.estado == 'Activo' %}

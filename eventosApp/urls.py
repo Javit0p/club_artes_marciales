@@ -10,4 +10,6 @@ urlpatterns = [
     # Rutas de Transacción
     path('inscripciones/', views.inscripcion_list, name='inscripcion_list'),
     path('inscripciones/nueva/', views.inscripcion_create, name='inscripcion_create'),
+    path('inscripciones/editar/<int:pk>/', views.editar_inscripcion, name='editar_inscripcion'),
+    path('inscripciones/eliminar/<int:pk>/', views.eliminar_inscripcion, name='eliminar_inscripcion'),
 ]
