@@ -4,6 +4,12 @@ from django.contrib import messages
 from .models import Evento, InscripcionEvento
 from .forms import EventoForm, InscripcionForm
 
+def es_administrador(user):
+    return user.groups.filter(name='Administrador').exists() or user.is_superuser
+
+def puede_editar(user):
+    return es_administrador(user) or user.groups.filter(name='Supervisor').exists()
+
 @login_required
 def evento_list(request):
     query = request.GET.get('q', '')
@@ -11,10 +17,17 @@ def evento_list(request):
         eventos = Evento.objects.filter(titulo__icontains=query)
     else:
         eventos = Evento.objects.all()
-    return render(request, 'eventosApp/evento_list.html', {'eventos': eventos, 'query': query})
+    return render(request, 'eventosApp/evento_list.html', {
+        'eventos': eventos, 
+        'query': query,
+        'es_admin': es_administrador(request.user),
+        'es_supervisor': request.user.groups.filter(name='Supervisor').exists(),
+    })
 
 @login_required
 def evento_create(request):
+    if not puede_editar(request.user):
+        return redirect('evento_list')
     if request.method == 'POST':
         form = EventoForm(request.POST)
         if form.is_valid():
@@ -26,6 +39,8 @@ def evento_create(request):
 
 @login_required
 def evento_update(request, pk):
+    if not puede_editar(request.user):
+        return redirect('evento_list')
     evento = get_object_or_404(Evento, pk=pk)
     if request.method == 'POST':
         form = EventoForm(request.POST, instance=evento)
@@ -38,6 +53,8 @@ def evento_update(request, pk):
 
 @login_required
 def evento_delete(request, pk):
+    if not puede_editar(request.user):
+        return redirect('evento_list')
     evento = get_object_or_404(Evento, pk=pk)
     if request.method == 'POST':
         evento.delete()
@@ -49,10 +66,16 @@ def evento_delete(request, pk):
 @login_required
 def inscripcion_list(request):
     inscripciones = InscripcionEvento.objects.select_related('alumno', 'evento').all()
-    return render(request, 'eventosApp/inscripcion_list.html', {'inscripciones': inscripciones})
+    return render(request, 'eventosApp/inscripcion_list.html', {
+        'inscripciones': inscripciones,
+        'es_admin': es_administrador(request.user),
+        'es_supervisor': request.user.groups.filter(name='Supervisor').exists(),
+    })
 
 @login_required
 def inscripcion_create(request):
+    if not puede_editar(request.user):
+        return redirect('inscripcion_list')
     if request.method == 'POST':
         form = InscripcionForm(request.POST)
         if form.is_valid():
@@ -64,6 +87,8 @@ def inscripcion_create(request):
 
 @login_required
 def editar_inscripcion(request, pk):
+    if not puede_editar(request.user):
+        return redirect('inscripcion_list')
     inscripcion = get_object_or_404(InscripcionEvento, pk=pk)
     if request.method == 'POST':
         form = InscripcionForm(request.POST, instance=inscripcion)
@@ -77,6 +102,8 @@ def editar_inscripcion(request, pk):
 
 @login_required
 def eliminar_inscripcion(request, pk):
+    if not puede_editar(request.user):
+        return redirect('inscripcion_list')
     inscripcion = get_object_or_404(InscripcionEvento, pk=pk)
     if request.method == 'POST':
         inscripcion.delete()
