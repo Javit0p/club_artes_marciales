@@ -3,16 +3,79 @@
 {% block content %}
 <div class="container my-4">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="card shadow border-0">
                 <div class="card-body p-4">
-                    <h3 class="mb-3">{{ titulo }}</h3>
-                    <form method="post">
+                    <h3 class="mb-4 fw-bold">{{ titulo }}</h3>
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <div class="d-flex justify-content-between mt-4">
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="row">
+                            <!-- Columna izquierda: Datos del Alumno -->
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Nombre Completo:</label>
+                                    {{ form.nombre }}
+                                    <div class="text-danger small">{{ form.nombre.errors }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Documento / RUT:</label>
+                                        {{ form.documento }}
+                                        <div class="text-danger small">{{ form.documento.errors }}</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Horario de Entrenamiento:</label>
+                                        {{ form.horario }}
+                                        <div class="text-danger small">{{ form.horario.errors }}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Cinturón:</label>
+                                        {{ form.cinturon }}
+                                        <div class="text-danger small">{{ form.cinturon.errors }}</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-semibold">Estado:</label>
+                                        {{ form.estado }}
+                                        <div class="text-danger small">{{ form.estado.errors }}</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Documentos (Certificados / Ficha):</label>
+                                    {{ form.documentos }}
+                                    <div class="text-danger small">{{ form.documentos.errors }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Columna derecha: Vista previa y Foto del Alumno -->
+                            <div class="col-md-4 text-center border-start d-flex flex-column justify-content-center align-items-center">
+                                <div class="mb-3">
+                                    {% if form.instance.foto %}
+                                        <img src="{{ form.instance.foto.url }}" id="previewFoto" alt="Foto del Alumno" class="img-thumbnail shadow-sm" style="width: 170px; height: 170px; object-fit: cover;">
+                                    {% else %}
+                                        <div id="placeholderFoto" class="rounded border bg-light d-flex align-items-center justify-content-center text-muted mx-auto" style="width: 170px; height: 170px;">
+                                            <span>Sin Foto</span>
+                                        </div>
+                                        <img src="" id="previewFoto" alt="Vista previa" class="img-thumbnail shadow-sm d-none" style="width: 170px; height: 170px; object-fit: cover;">
+                                    {% endif %}
+                                </div>
+                                <div class="w-100 text-start">
+                                    <label class="form-label fw-semibold small">Foto del Alumno:</label>
+                                    {{ form.foto }}
+                                    <div class="text-danger small">{{ form.foto.errors }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                             <a href="{% url 'alumno_list' %}" class="btn btn-outline-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-primary">Guardar Registro</button>
+                            <button type="submit" class="btn btn-primary px-4">Guardar Registro</button>
                         </div>
                     </form>
                 </div>
@@ -20,4 +83,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputFoto = document.getElementById("id_foto");
+        const preview = document.getElementById("previewFoto");
+        const placeholder = document.getElementById("placeholderFoto");
+        if (inputFoto) {
+            inputFoto.addEventListener("change", function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        preview.src = ev.target.result;
+                        preview.classList.remove("d-none");
+                        if (placeholder) placeholder.classList.add("d-none");
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}
